@@ -18,7 +18,7 @@ def generate_app_jwt() -> str:
         "exp": now + (9 * 60),  # GitHub caps this at 10 minutes
         "iss": settings.github_app_id,
     }
-    return jwt.encode(payload, settings.github_private_key, algorithm="RS256")
+    return jwt.encode(payload, settings.github_private_key_pem, algorithm="RS256")
 
 
 async def get_installation_token(installation_id: int) -> str:

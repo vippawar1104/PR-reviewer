@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Void</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+
+  :root {
+    --void-0: #050506;
+    --void-1: #0f0f11;
+    --void-2: #18181b;
+    --void-3: #2b2b2f;
+    --void-3-hover: #38383d;
+    --void-fog: #87878d;
+    --void-mist: #c8c8cd;
+    --void-bone: #ededeb;
+    --font-display: 'Bricolage Grotesque', system-ui, sans-serif;
+    --font-body: 'IBM Plex Sans', -apple-system, sans-serif;
+    --font-mono: 'IBM Plex Mono', 'SF Mono', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--void-0);
+    color: var(--void-bone);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  }
+
+  a { color: inherit; }
+  button { font-family: inherit; cursor: pointer; }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 32px;
+  }
+
+  #grain {
+    position: fixed;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    opacity: 0.85;
+    pointer-events: none;
+    mix-blend-mode: overlay;
+  }
+
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 28px 32px;
+    max-width: 1120px;
+    margin: 0 auto;
+  }
+
+  .wordmark {
+    font-family: var(--font-mono);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--void-bone);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .wordmark::before {
+    content: '';
+    width: 7px;
+    height: 7px;
+    background: var(--void-bone);
+    border-radius: 50%;
+    box-shadow: 0 0 12px 2px rgba(237,237,235,0.5);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 36px;
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .nav-links a {
+    text-decoration: none;
+    color: var(--void-fog);
+    transition: color 0.2s ease;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+
+  .nav-links a:hover,
+  .nav-links a:focus-visible {
+    color: var(--void-bone);
+    border-bottom-color: var(--void-3-hover);
+  }
+
+  .hero {
+    position: relative;
+    z-index: 1;
+    padding: 96px 0 140px;
+  }
+
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--void-fog);
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .eyebrow .rule {
+    width: 32px;
+    height: 1px;
+    background: var(--void-3-hover);
+  }
+
+  h1.headline {
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: clamp(3.2rem, 9vw, 7.2rem);
+    line-height: 0.92;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+    color: var(--void-bone);
+    max-width: 11ch;
+  }
+
+  .headline .fade {
+    color: transparent;
+    -webkit-text-stroke: 1px var(--void-3-hover);
+  }
+
+  .subhead {
+    font-size: 1.15rem;
+    color: var(--void-mist);
+    max-width: 46ch;
+    margin-top: 32px;
+    line-height: 1.65;
+  }
+
+  .subhead strong {
+    color: var(--void-bone);
+    font-weight: 500;
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-top: 48px;
+    flex-wrap: wrap;
+  }
+
+  .hero-actions .btn-ghost {
+    margin-top: 2px;
+  }
+
+  .btn-primary {
+    font-family: var(--font-mono);
+    font-size: 13.5px;
+    letter-spacing: 0.03em;
+    background: var(--void-bone);
+    color: var(--void-0);
+    border: none;
+    padding: 15px 24px 15px 22px;
+    border-radius: 3px;
+    font-weight: 500;
+    transition: transform 0.15s ease, background 0.15s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .btn-primary:hover { background: #fff; transform: translateY(-1px); }
+
+  .btn-primary svg { flex-shrink: 0; }
+
+  .btn-sub {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--void-fog);
+    margin-top: 10px;
+    letter-spacing: 0.02em;
+  }
+
+  .btn-ghost {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    letter-spacing: 0.04em;
+    background: transparent;
+    color: var(--void-mist);
+    border: 1px solid var(--void-3);
+    padding: 13px 24px;
+    border-radius: 3px;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    display: inline-block;
+  }
+
+  .btn-ghost:hover { border-color: var(--void-3-hover); color: var(--void-bone); }
+
+  section { position: relative; z-index: 1; }
+
+  .section-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 56px;
+    padding-top: 88px;
+    border-top: 1px solid var(--void-2);
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--void-fog);
+    letter-spacing: 0.08em;
+  }
+
+  h2.section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+  }
+
+  .section-desc {
+    color: var(--void-fog);
+    max-width: 34ch;
+    font-size: 0.98rem;
+  }
+
+  .flow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--void-2);
+    border: 1px solid var(--void-2);
+    margin-bottom: 100px;
+  }
+
+  .flow-step {
+    background: var(--void-1);
+    padding: 36px 30px;
+    position: relative;
+  }
+
+  .flow-step .step-index {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--void-fog);
+    letter-spacing: 0.1em;
+  }
+
+  .flow-step h3 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin: 18px 0 12px;
+  }
+
+  .flow-step p {
+    color: var(--void-fog);
+    font-size: 0.92rem;
+    line-height: 1.6;
+  }
+
+  .feed-frame {
+    background: var(--void-1);
+    border: 1px solid var(--void-2);
+    border-radius: 6px;
+    padding: 4px;
+    margin-bottom: 100px;
+    overflow: hidden;
+  }
+
+  .feed-titlebar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--void-fog);
+  }
+
+  .feed-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--void-bone);
+    box-shadow: 0 0 8px 1px rgba(237,237,235,0.45);
+  }
+
+  .feed-body {
+    background: var(--void-0);
+    border-radius: 4px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toast {
+    font-family: var(--font-mono);
+    font-size: 12.5px;
+    color: var(--void-mist);
+    padding: 11px 13px;
+    background: var(--void-2);
+    border-left: 2px solid var(--void-3-hover);
+    border-radius: 3px;
+    opacity: 0;
+    animation: toast-in 0.5s ease forwards;
+  }
+
+  .toast.bright { border-left-color: var(--void-bone); color: var(--void-bone); }
+  .toast:nth-child(1) { animation-delay: 0.1s; }
+  .toast:nth-child(2) { animation-delay: 0.6s; }
+  .toast:nth-child(3) { animation-delay: 1.1s; }
+  .toast:nth-child(4) { animation-delay: 1.6s; }
+
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(-6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .features {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: var(--void-2);
+    border: 1px solid var(--void-2);
+    margin-bottom: 100px;
+  }
+
+  .feature {
+    background: var(--void-1);
+    padding: 34px 32px;
+  }
+
+  .feature .f-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--void-fog);
+    margin-bottom: 16px;
+  }
+
+  .feature h3 {
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+
+  .feature p {
+    color: var(--void-fog);
+    font-size: 0.93rem;
+    line-height: 1.65;
+    max-width: 42ch;
+  }
+
+  .install {
+    padding-bottom: 100px;
+  }
+
+  .terminal {
+    background: var(--void-1);
+    border: 1px solid var(--void-2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--void-2);
+  }
+
+  .terminal-dots { display: flex; gap: 7px; }
+  .terminal-dots span {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--void-3);
+  }
+
+  .terminal-label {
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--void-fog);
+  }
+
+  .terminal-body {
+    padding: 26px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .terminal-cmd {
+    font-family: var(--font-mono);
+    font-size: 14.5px;
+    color: var(--void-mist);
+    white-space: nowrap;
+    overflow-x: auto;
+  }
+
+  .terminal-cmd .prompt { color: var(--void-fog); margin-right: 12px; }
+  .terminal-cmd .cursor {
+    display: inline-block;
+    width: 8px; height: 16px;
+    background: var(--void-bone);
+    margin-left: 4px;
+    vertical-align: text-bottom;
+    animation: blink 1.1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .copy-btn {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    background: var(--void-2);
+    border: 1px solid var(--void-3);
+    color: var(--void-mist);
+    padding: 9px 16px;
+    border-radius: 4px;
+    letter-spacing: 0.03em;
+    transition: border-color 0.15s ease, color 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .copy-btn:hover, .copy-btn:focus-visible { border-color: var(--void-3-hover); color: var(--void-bone); }
+
+  .install-meta {
+    display: flex;
+    gap: 28px;
+    margin-top: 20px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--void-fog);
+    flex-wrap: wrap;
+  }
+
+  .install-meta span { display: flex; align-items: center; gap: 8px; }
+  .install-meta .req-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--void-3-hover); }
+
+  footer {
+    border-top: 1px solid var(--void-2);
+    padding: 40px 0 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: var(--font-mono);
+    font-size: 11.5px;
+    color: var(--void-fog);
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  @media (max-width: 720px) {
+    .flow, .features { grid-template-columns: 1fr; }
+    nav { padding: 22px 20px; }
+    .wrap, .hero, .install { padding-left: 20px; padding-right: 20px; }
+    .nav-links { gap: 20px; }
+    .terminal-body { flex-direction: column; align-items: flex-start; }
+    .copy-btn { align-self: flex-end; }
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--void-bone);
+    outline-offset: 2px;
+  }
+</style>
+</head>
+<body>
+
+<canvas id="grain"></canvas>
+
+<nav>
+  <div class="wordmark">Void</div>
+  <div class="nav-links">
+    <a href="#how">How it works</a>
+    <a href="#features">Features</a>
+    <a href="#install">Install</a>
+  </div>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow"><span class="rule"></span>AI code review for GitHub pull requests</div>
+  <h1 class="headline">Nothing gets<br>through the <span class="fade">void</span></h1>
+  <p class="subhead">
+    Void reads every pull request the moment it opens, catches the bugs a human skim would miss,
+    and says <strong>nothing at all</strong> when the code is clean. No noise, no rubber-stamping —
+    just the findings that actually matter.
+  </p>
+  <div class="hero-actions">
+    <div>
+      <button class="btn-primary" onclick="document.getElementById('install').scrollIntoView({behavior:'smooth'})">
+        <svg width="14" height="14" viewBox="0 0 16 16" fill="none"><path d="M8 1.5V11M8 11L4.5 7.5M8 11L11.5 7.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M2.5 13.5H13.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        Get void
+      </button>
+      <span class="btn-sub">open source · self-hosted · free</span>
+    </div>
+    <a class="btn-ghost" href="#how">See how it reviews →</a>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="how">
+    <div class="section-head">
+      <div>
+        <div class="section-num">01 — Mechanism</div>
+        <h2 class="section-title">Three steps.<br>No dashboard to babysit.</h2>
+      </div>
+      <p class="section-desc">Void installs as a GitHub App and does its work entirely through webhooks — you never have to open it.</p>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-index">A PULL REQUEST OPENS</div>
+        <h3>GitHub notifies void</h3>
+        <p>The instant a PR opens or gets a new commit, GitHub sends the event straight to void's listener. No polling, no delay.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-index">THE DIFF IS READ</div>
+        <h3>Void reads the change</h3>
+        <p>It pulls the diff and the full content of every touched file, then asks a language model to find real bugs — not style nitpicks.</p>
+      </div>
+      <div class="flow-step">
+        <div class="step-index">A VERDICT IS REACHED</div>
+        <h3>It speaks, or it doesn't</h3>
+        <p>Only findings above a severity bar get posted, deduplicated against what it already flagged. Silence means the code passed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="feed">
+    <div class="section-head">
+      <div>
+        <div class="section-num">02 — On your desktop</div>
+        <h2 class="section-title">Watch it work, live.</h2>
+      </div>
+      <p class="section-desc">A small floating panel shows every review as it happens — no browser tab required.</p>
+    </div>
+
+    <div class="feed-frame">
+      <div class="feed-titlebar"><span class="feed-dot"></span>void — live</div>
+      <div class="feed-body">
+        <div class="toast">Reviewing PR #142 on api/payments...</div>
+        <div class="toast">Found 2 finding(s) on PR #142</div>
+        <div class="toast bright">Posted 2 comment(s) on PR #142</div>
+        <div class="toast">PR #139 already reviewed, skipping</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="features">
+    <div class="section-head">
+      <div>
+        <div class="section-num">03 — Behavior</div>
+        <h2 class="section-title">Built to be trusted,<br>not muted.</h2>
+      </div>
+      <p class="section-desc">Every design decision optimizes for one thing: staying installed after week one.</p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <div class="f-label">Noise control</div>
+        <h3>Silent by default</h3>
+        <p>Low-severity findings are logged, not posted. A capped, ranked comment count means void never walls-of-text a big diff.</p>
+      </div>
+      <div class="feature">
+        <div class="f-label">Memory</div>
+        <h3>Never repeats itself</h3>
+        <p>Every finding is remembered. Push again without fixing something and void stays quiet instead of flagging it a second time.</p>
+      </div>
+      <div class="feature">
+        <div class="f-label">Presence</div>
+        <h3>Lives on your desktop</h3>
+        <p>A native, always-on-top panel — not another tab to check. Green means connected, and it gets out of your way otherwise.</p>
+      </div>
+      <div class="feature">
+        <div class="f-label">Control</div>
+        <h3>Pause it, or force it</h3>
+        <p>One click silences void mid-sprint. One text field — <code>owner/repo#123</code> — forces a review on demand, anytime.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="install" class="install">
+    <div class="section-head">
+      <div>
+        <div class="section-num">04 — Install</div>
+        <h2 class="section-title">Bring void into a repo.</h2>
+      </div>
+      <p class="section-desc">Runs anywhere you can run a small server. The desktop panel is native macOS.</p>
+    </div>
+
+    <div class="terminal">
+      <div class="terminal-bar">
+        <div class="terminal-dots"><span></span><span></span><span></span></div>
+        <div class="terminal-label">zsh</div>
+      </div>
+      <div class="terminal-body">
+        <div class="terminal-cmd"><span class="prompt">$</span>git clone https://github.com/vippawar1104/PR-reviewer.git<span class="cursor"></span></div>
+        <button class="copy-btn" onclick="copyInstall(this)">Copy</button>
+      </div>
+    </div>
+
+    <div class="install-meta">
+      <span><span class="req-dot"></span>Requires a GitHub App installation</span>
+      <span><span class="req-dot"></span>Desktop panel — macOS 13+</span>
+      <span><span class="req-dot"></span>Self-hosted, your infrastructure</span>
+    </div>
+  </section>
+
+</main>
+
+<footer class="wrap">
+  <span>void — a quieter kind of code review</span>
+  <span>built to say nothing, until it matters</span>
+</footer>
+
+<script>
+  (function () {
+    var canvas = document.getElementById('grain');
+    var ctx = canvas.getContext('2d');
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    function drawGrain() {
+      var w = canvas.width, h = canvas.height;
+      var imageData = ctx.createImageData(w, h);
+      var buffer = imageData.data;
+      for (var i = 0; i < buffer.length; i += 4) {
+        var v = Math.random() * 255;
+        buffer[i] = v;
+        buffer[i + 1] = v;
+        buffer[i + 2] = v;
+        buffer[i + 3] = 34;
+      }
+      ctx.putImageData(imageData, 0, 0);
+    }
+
+    drawGrain();
+    if (!reduced) {
+      setInterval(drawGrain, 80);
+    }
+  })();
+
+  function copyInstall(btn) {
+    var text = 'git clone https://github.com/vippawar1104/PR-reviewer.git';
+    navigator.clipboard && navigator.clipboard.writeText(text);
+    var original = btn.textContent;
+    btn.textContent = 'Copied';
+    setTimeout(function () { btn.textContent = original; }, 1600);
+  }
+</script>
+</body>
+</html>
